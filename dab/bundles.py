@@ -118,7 +118,6 @@ class Bundles(object):
         :type bundle: str
         :type target: str
         '''
-        raise NotImplementedError
         bundle_directory = pathjoin(self.basedir, bundle)
         if not exists(bundle_directory):
             raise Exception('Bundle {} does not exist'.format(bundle))
