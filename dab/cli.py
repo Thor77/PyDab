@@ -47,9 +47,12 @@ def bundle(ctx):
 @click.argument('source')
 @click.argument('reference')
 @click.argument('directory')
+@click.option('--submodules', help='Add submodules', is_flag=True)
 @click.pass_context
-def add(ctx, source, reference, directory):
+def add(ctx, source, reference, directory, submodules):
     ctx.obj['bundles'].add(source, reference, directory)
+    if submodules:
+        ctx.obj['bundles'].add_submodules(directory)
 
 
 @bundle.command()

@@ -5,6 +5,7 @@ from os.path import join as pathjoin
 from os.path import abspath, basename, exists, relpath
 from subprocess import run
 
+from dab import submodules
 from dab.link import link_directory
 
 Bundle = namedtuple('Bundle', ['source', 'ref', 'dir'])
@@ -137,3 +138,20 @@ class Bundles(object):
             raise Exception('Bundle {} does not exist'.format(bundle))
         # link all files in bundle_directory to target
         link_directory(bundle_directory, target)
+
+    def add_submodules(self, directory):
+        '''
+        Find submodules and add them to the bundle
+
+        :param directory: directory to search for .gitmodules
+        :type directory: str
+        '''
+        directory_path = pathjoin(self.basedir, directory)
+        for submodule in submodules.find(directory_path):
+            submodule_destination = pathjoin(directory_path, submodule.path)
+            # remove destination, because git subtree wont write to existing dir
+            run(['git', 'rm', submodule_destination])
+            run(['git', 'commit', '--message', 'Removed {}\n\nfor submodule bundle'.format(submodule_destination)])
+
+            # add bundle for submodule
+            self.add(submodule.url, 'master', submodule_destination) 
