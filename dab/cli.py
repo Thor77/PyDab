@@ -33,6 +33,9 @@ def install(ctx, bundles, target):
     '''
     Install one or multiple bundles
     '''
+    if not bundles:
+        click.echo('No bundles selected')
+        return
     if not target:
         target = environ['HOME']
     for bundle in bundles:
