@@ -15,6 +15,15 @@ def cli(ctx, dry_run):
 
 
 @cli.command()
+@click.pass_context
+def init(ctx):
+    '''
+    Initialize dab repository
+    '''
+    ctx.obj['bundles'].init()
+
+
+@cli.command()
 @click.argument('bundles', nargs=-1)
 @click.option(
     '--target', help='Target directory', type=click.Path(exists=True)

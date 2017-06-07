@@ -1,5 +1,6 @@
 import json
 from collections import namedtuple
+from os import makedirs
 from os.path import join as pathjoin
 from os.path import abspath, basename, exists, relpath
 from subprocess import run
@@ -67,6 +68,19 @@ class Bundles(object):
         obj = {'Bundles' if compat else 'bundles': list(bundles)}
         with open(path, 'w') as f:
             json.dump(obj, f)
+
+    def init(self):
+        '''
+        Initialize repo for version control and create base package
+        '''
+        # create contents
+        makedirs(pathjoin(self.basedir, 'base'), exist_ok=True)
+        self._save()
+
+        # version control
+        run(['git', 'init', '-q'])
+        run(['git', 'add', 'bundles.json', 'base/'])
+        run(['git', 'commit', '--message', 'Initial commit'])
 
     def add(self, source, reference, directory):
         '''
