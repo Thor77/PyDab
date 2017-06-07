@@ -2,7 +2,7 @@ import json
 from collections import namedtuple
 from os import makedirs
 from os.path import join as pathjoin
-from os.path import abspath, basename, exists, relpath
+from os.path import abspath, exists, relpath
 from subprocess import run
 
 from dab import submodules
@@ -149,9 +149,15 @@ class Bundles(object):
         directory_path = pathjoin(self.basedir, directory)
         for submodule in submodules.find(directory_path):
             submodule_destination = pathjoin(directory_path, submodule.path)
-            # remove destination, because git subtree wont write to existing dir
+            # remove destination
+            # because git subtree wont write to existing dir
             run(['git', 'rm', submodule_destination])
-            run(['git', 'commit', '--message', 'Removed {}\n\nfor submodule bundle'.format(submodule_destination)])
+            run([
+                'git', 'commit', '--message',
+                'Removed {}\n\nfor submodule bundle'.format(
+                    submodule_destination
+                )
+            ])
 
             # add bundle for submodule
-            self.add(submodule.url, 'master', submodule_destination) 
+            self.add(submodule.url, 'master', submodule_destination)

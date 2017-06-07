@@ -2,7 +2,6 @@ from collections import namedtuple
 from configparser import ConfigParser
 from os.path import join as pathjoin
 from os.path import exists
-from pathlib import Path
 
 Submodule = namedtuple('Submodule', ['url', 'path'])
 
