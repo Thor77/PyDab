@@ -30,6 +30,9 @@ def init(ctx):
 )
 @click.pass_context
 def install(ctx, bundles, target):
+    '''
+    Install one or multiple bundles
+    '''
     if not target:
         target = environ['HOME']
     for bundle in bundles:
@@ -40,6 +43,9 @@ def install(ctx, bundles, target):
 @cli.group()
 @click.pass_context
 def bundle(ctx):
+    '''
+    Manage bundles.json
+    '''
     pass
 
 
@@ -50,6 +56,9 @@ def bundle(ctx):
 @click.option('--submodules', help='Add submodules', is_flag=True)
 @click.pass_context
 def add(ctx, source, reference, directory, submodules):
+    '''
+    Add a bundle
+    '''
     ctx.obj['bundles'].add(source, reference, directory)
     if submodules:
         ctx.obj['bundles'].add_submodules(directory)
@@ -58,4 +67,7 @@ def add(ctx, source, reference, directory, submodules):
 @bundle.command()
 @click.pass_context
 def update(ctx):
+    '''
+    Update bundles
+    '''
     ctx.obj['bundles'].update()
