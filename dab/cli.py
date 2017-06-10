@@ -24,7 +24,7 @@ def init(ctx):
 
 
 @cli.command()
-@click.argument('bundles', nargs=-1)
+@click.argument('bundles', nargs=-1, required=True)
 @click.option(
     '--target', help='Target directory', type=click.Path(exists=True)
 )
@@ -33,9 +33,6 @@ def install(ctx, bundles, target):
     '''
     Install one or multiple bundles
     '''
-    if not bundles:
-        click.echo('No bundles selected')
-        return
     if not target:
         target = environ['HOME']
     for bundle in bundles:
